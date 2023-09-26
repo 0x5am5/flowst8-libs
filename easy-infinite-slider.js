@@ -8,7 +8,7 @@ class FSEasyInfiniteSlider {
       // defaults
       // HTML attributes will always override settings
       this.settings = {
-        container: "[data-eis-scroll-container]",
+        element: "[data-eis-scroll-container]",
         inner: "[data-eis-scroll-inner]",
         children: "[data-eis-scroll-item]",
         duration: 8,
@@ -18,98 +18,112 @@ class FSEasyInfiniteSlider {
 
       this.getElements();
 
-      if (this.scrollInner && this.scrollElements) {
-        this.duplicateSlider();
-        this.animate();
+      if (this.container.length) {
+        this.container.forEach((container) => {
+          this.duplicateSlider(container);
+          const animation = this.animate(container);
 
-        if (
-          this.settings.mouseControl ||
-          this.scrollInner.getAttribute("data-eis-mouse-control")
-        ) {
-          this.addEvents();
-        }
+          if (
+            this.settings.mouseControl ||
+            container.getAttribute("data-eis-mouse-control")
+          ) {
+            this.addEvents(container, animation);
+          }
+        });
       }
     }
   }
 
   getElements() {
     // get wrapper
-    this.container = document.querySelector(this.settings.container);
+    if (typeof this.settings.element === "string") {
+      this.container = Array.from(
+        document.querySelectorAll(this.settings.element)
+      );
+    } else {
+      // Create array from element
+      this.container = [this.settings.element];
+    }
 
-    if (!this.container) {
+    if (!this.container.length) {
       console.error(
-        `FlowSt8 Easy Infinite Slider: ${this.settings.container} found`
+        `FlowSt8 Easy Infinite Slider: ${this.settings.element} found`
       );
 
       return;
     }
 
-    // set necessary container styles
-    this.container.style.overflow = "hidden";
-    this.container.style.width = "100%";
+    this.container.forEach((container) => {
+      // set necessary container styles
+      container.style.overflow = "hidden";
+      container.style.width = "100%";
 
-    // Get inner, scrollable element
-    this.scrollInner = document.querySelector(this.settings.inner);
+      // Get inner, scrollable element
+      const inner = container.querySelector(this.settings.inner);
 
-    if (!this.scrollInner) {
-      console.error(
-        `FlowSt8 Easy Infinite Slider: No ${this.settings.inner} found!`
-      );
-      return;
-    }
+      if (!inner) {
+        console.error(
+          `FlowSt8 Easy Infinite Slider: No ${this.settings.inner} found!`
+        );
+        // TODO: BREAK
+        return;
+      }
 
-    // Set neccessary inner styles
-    this.scrollInner.style.display = "flex";
-    this.scrollInner.style.width = "100%";
+      // Set neccessary inner styles
+      inner.style.display = "flex";
+      inner.style.width = "100%";
 
-    if (this.scrollInner.getAttribute("data-eis-scroll-duration")) {
-      this.settings.duration = this.scrollInner.getAttribute(
-        "data-eis-scroll-duration"
-      );
-    }
+      const elements = inner.querySelectorAll(this.settings.children);
 
-    this.scrollElements = this.scrollInner.querySelectorAll(
-      this.settings.children
-    );
+      if (!elements.length) {
+        console.error(
+          `FlowSt8 Easy Infinite Slider: No ${this.settings.children} found!`
+        );
 
-    if (!this.scrollElements.length) {
-      console.error(
-        `FlowSt8 Easy Infinite Slider: No ${this.settings.children} found!`
-      );
+        return;
+      }
 
-      return;
-    }
-
-    if (window.getComputedStyle(this.scrollElements[0]).display === "flex") {
-      this.scrollElements[0].style.flex = "0 0 auto";
-    }
-  }
-
-  duplicateSlider() {
-    /* Duplicate slider to create illusion */
-    const node = this.scrollInner.childNodes;
-    this.scrollInner.appendChild(node[0].cloneNode(true));
-
-    // Add a second clone to accomodate really long sliders
-    this.scrollInner.appendChild(node[0].cloneNode(true));
-  }
-
-  animate() {
-    /* GSAP slider */
-    this.easyInfiniteScroll = gsap.to(this.scrollInner, {
-      x: () => -(this.scrollInner.scrollWidth / 3) + "px",
-      ease: "none",
-      repeat: -1,
-      duration: this.scrollElements.length * this.settings.duration,
+      if (window.getComputedStyle(elements[0]).display === "flex") {
+        elements[0].style.flex = "0 0 auto";
+      }
     });
   }
 
-  addEvents() {
-    this.scrollInner.addEventListener("mouseover", () =>
-      this.easyInfiniteScroll.pause()
-    );
-    this.scrollInner.addEventListener("mouseout", () =>
-      this.easyInfiniteScroll.play()
-    );
+  duplicateSlider(container) {
+    const inner = container.querySelector(this.settings.inner);
+    /* Duplicate slider to create illusion */
+    const node = inner.childNodes;
+    inner.appendChild(node[0].cloneNode(true));
+
+    // Add a second clone to accomodate really long sliders
+    inner.appendChild(node[0].cloneNode(true));
+  }
+
+  animate(container) {
+    const inner = container.querySelector(this.settings.inner);
+    const elements = inner.querySelectorAll(this.settings.children);
+    // set default
+    let duration = this.settings.duration;
+
+    if (inner.getAttribute("data-eis-scroll-duration")) {
+      // override default
+      duration = inner.getAttribute("data-eis-scroll-duration");
+    }
+
+    /* GSAP slider */
+    const animation = gsap.to(inner, {
+      x: () => -(inner.scrollWidth / 3) + "px",
+      ease: "none",
+      repeat: -1,
+      duration: elements.length * duration,
+    });
+
+    return animation;
+  }
+
+  addEvents(container, animation) {
+    const inner = container.querySelector(this.settings.inner);
+    inner.addEventListener("mouseover", () => animation.pause());
+    inner.addEventListener("mouseout", () => animation.play());
   }
 }
