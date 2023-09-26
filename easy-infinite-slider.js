@@ -46,47 +46,47 @@ class FSEasyInfiniteSlider {
     }
 
     if (!this.container.length) {
-      console.error(
+      console.warn(
         `FlowSt8 Easy Infinite Slider: ${this.settings.element} found`
       );
 
       return;
+    } else {
+      this.container.forEach((container) => {
+        // set necessary container styles
+        container.style.overflow = "hidden";
+        container.style.width = "100%";
+
+        // Get inner, scrollable element
+        const inner = container.querySelector(this.settings.inner);
+
+        if (!inner) {
+          console.error(
+            `FlowSt8 Easy Infinite Slider: No ${this.settings.inner} found!`
+          );
+          // TODO: BREAK
+          return;
+        }
+
+        // Set neccessary inner styles
+        inner.style.display = "flex";
+        inner.style.width = "100%";
+
+        const elements = inner.querySelectorAll(this.settings.children);
+
+        if (!elements.length) {
+          console.error(
+            `FlowSt8 Easy Infinite Slider: No ${this.settings.children} found!`
+          );
+
+          return;
+        }
+
+        if (window.getComputedStyle(elements[0]).display === "flex") {
+          elements[0].style.flex = "0 0 auto";
+        }
+      });
     }
-
-    this.container.forEach((container) => {
-      // set necessary container styles
-      container.style.overflow = "hidden";
-      container.style.width = "100%";
-
-      // Get inner, scrollable element
-      const inner = container.querySelector(this.settings.inner);
-
-      if (!inner) {
-        console.error(
-          `FlowSt8 Easy Infinite Slider: No ${this.settings.inner} found!`
-        );
-        // TODO: BREAK
-        return;
-      }
-
-      // Set neccessary inner styles
-      inner.style.display = "flex";
-      inner.style.width = "100%";
-
-      const elements = inner.querySelectorAll(this.settings.children);
-
-      if (!elements.length) {
-        console.error(
-          `FlowSt8 Easy Infinite Slider: No ${this.settings.children} found!`
-        );
-
-        return;
-      }
-
-      if (window.getComputedStyle(elements[0]).display === "flex") {
-        elements[0].style.flex = "0 0 auto";
-      }
-    });
   }
 
   duplicateSlider(container) {
