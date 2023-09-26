@@ -105,9 +105,9 @@ class FSEasyInfiniteSlider {
     // set default
     let duration = this.settings.duration;
 
-    if (inner.getAttribute("data-eis-scroll-duration")) {
+    if (container.getAttribute("data-eis-scroll-duration")) {
       // override default
-      duration = inner.getAttribute("data-eis-scroll-duration");
+      duration = container.getAttribute("data-eis-scroll-duration");
     }
 
     /* GSAP slider */
