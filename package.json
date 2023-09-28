@@ -1,11 +1,25 @@
 {
-  "name": "flowst8-libraries",
+  "name": "@flowst8/libz",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/flowst8-libz.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "webpack && karma start karma.conf.js && jasmine",
+    "start": "webpack"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^5.1.0",
+    "jasmine-core": "^5.1.1",
+    "karma": "^6.4.2",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-jasmine": "^5.1.0",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "gsap": "^3.12.2",
+    "lodash": "^4.17.21"
+  }
 }
