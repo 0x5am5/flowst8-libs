@@ -6,7 +6,8 @@
   "scripts": {
     "test": "webpack && karma start karma.conf.js && jasmine",
     "start": "webpack",
-    "dev": "webpack --watch --progress"
+    "dev": "webpack --watch --progress",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
