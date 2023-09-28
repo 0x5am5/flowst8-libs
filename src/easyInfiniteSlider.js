@@ -1,4 +1,4 @@
-const gsap = require("gsap");
+const gsap = require("gsap/dist/gsap.js");
 
 class FSEasyInfiniteSlider {
   constructor(settings = {}) {
@@ -113,7 +113,7 @@ class FSEasyInfiniteSlider {
     }
 
     /* GSAP slider */
-    const animation = gsap.to(inner, {
+    const animation = gsap.gsap.to(inner, {
       x: () => -(inner.scrollWidth / 3) + "px",
       ease: "none",
       repeat: -1,
