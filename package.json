@@ -5,11 +5,13 @@
   "main": "src/flowst8-libz.js",
   "scripts": {
     "test": "webpack && karma start karma.conf.js && jasmine",
-    "start": "webpack"
+    "start": "webpack",
+    "dev": "webpack --watch --progress"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "husky": "^8.0.3",
     "jasmine": "^5.1.0",
     "jasmine-core": "^5.1.1",
     "karma": "^6.4.2",

@@ -20,6 +20,8 @@ class FSEasyScrollNav {
       }
       this.setTop();
       this.addEvents();
+    } else {
+      console.warn("FSEasyScrollNav: No " + this.settings.element + " found!");
     }
   }
 
