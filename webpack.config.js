@@ -6,6 +6,7 @@ module.exports = {
     ["flowst8Libz"]: "./src/flowst8Libz.js",
     ["FSEasyScrollNav"]: "./src/easyScrollNav.js",
     ["FSEasyInfiniteSlider"]: "./src/easyInfiniteSlider.js",
+    ["FSEasyLazyLoadYouTube"]: "./src/easyLazyLoadYouTube.js",
   },
   output: {
     path: path.resolve(__dirname, "dist"),

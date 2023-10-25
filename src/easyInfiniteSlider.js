@@ -1,5 +1,24 @@
 const gsap = require("gsap/dist/gsap.js");
 
+const css = (el) => `
+  ${el.inner} {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+
+  ${el.children} {
+    flex: none;
+    animation: infinite-slider ${el.duration} linear infinite;
+  }
+
+  @keyframes infinite-slider {
+    0% { transform: translateX(0) }
+    100% { transform: translateX(-100%) }
+  }
+`;
+
 class FSEasyInfiniteSlider {
   constructor(settings = {}) {
     if (!gsap) {
@@ -13,7 +32,7 @@ class FSEasyInfiniteSlider {
         element: "[data-eis-scroll-container]",
         inner: "[data-eis-scroll-inner]",
         children: "[data-eis-scroll-item]",
-        duration: 8,
+        duration: "110s",
         mouseControl: false,
         ...settings,
       };
@@ -23,7 +42,7 @@ class FSEasyInfiniteSlider {
       if (this.container.length) {
         this.container.forEach((container) => {
           this.duplicateSlider(container);
-          const animation = this.animate(container);
+          // const animation = this.animate(container);
 
           if (
             this.settings.mouseControl ||
@@ -44,21 +63,17 @@ class FSEasyInfiniteSlider {
       );
     } else {
       // Create array from element
-      this.container = [this.settings.element];
+      this.container = this.settings.element ? [this.settings.element] : [];
     }
 
     if (!this.container.length) {
       console.warn(
-        `FlowSt8 Easy Infinite Slider: ${this.settings.element} found`
+        `FlowSt8 Easy Infinite Slider: No ${this.settings.element} found`
       );
 
       return;
     } else {
       this.container.forEach((container) => {
-        // set necessary container styles
-        container.style.overflow = "hidden";
-        container.style.width = "100%";
-
         // Get inner, scrollable element
         const inner = container.querySelector(this.settings.inner);
 
@@ -70,9 +85,16 @@ class FSEasyInfiniteSlider {
           return;
         }
 
-        // Set neccessary inner styles
-        inner.style.display = "flex";
-        inner.style.width = "100%";
+        const style = document.createElement("style");
+        document.getElementsByTagName("head")[0].append(style);
+        style.type = "text/css";
+
+        if (style.styleSheet) {
+          // This is required for IE8 and below.
+          style.styleSheet.cssText = css(this.settings);
+        } else {
+          style.appendChild(document.createTextNode(css(this.settings)));
+        }
 
         const elements = inner.querySelectorAll(this.settings.children);
 
@@ -83,10 +105,6 @@ class FSEasyInfiniteSlider {
 
           return;
         }
-
-        if (window.getComputedStyle(elements[0]).display === "flex") {
-          elements[0].style.flex = "0 0 auto";
-        }
       });
     }
   }
@@ -96,32 +114,29 @@ class FSEasyInfiniteSlider {
     /* Duplicate slider to create illusion */
     const node = inner.childNodes;
     inner.appendChild(node[0].cloneNode(true));
-
-    // Add a second clone to accomodate really long sliders
-    inner.appendChild(node[0].cloneNode(true));
   }
 
-  animate(container) {
-    const inner = container.querySelector(this.settings.inner);
-    const elements = inner.querySelectorAll(this.settings.children);
-    // set default
-    let duration = this.settings.duration;
+  // animate(container) {
+  //   const inner = container.querySelector(this.settings.inner);
+  //   const elements = inner.querySelectorAll(this.settings.children);
+  //   // set default
+  //   let duration = this.settings.duration;
 
-    if (container.getAttribute("data-eis-scroll-duration")) {
-      // override default
-      duration = container.getAttribute("data-eis-scroll-duration");
-    }
+  //   if (container.getAttribute("data-eis-scroll-duration")) {
+  //     // override default
+  //     duration = container.getAttribute("data-eis-scroll-duration");
+  //   }
 
-    /* GSAP slider */
-    const animation = gsap.gsap.to(inner, {
-      x: () => -(inner.scrollWidth / 3) + "px",
-      ease: "none",
-      repeat: -1,
-      duration: elements.length * duration,
-    });
+  //   /* GSAP slider */
+  //   const animation = gsap.gsap.to(inner, {
+  //     x: () => -(inner.scrollWidth / 3) + "px",
+  //     ease: "none",
+  //     repeat: -1,
+  //     duration: elements.length * duration,
+  //   });
 
-    return animation;
-  }
+  //   return animation;
+  // }
 
   addEvents(container, animation) {
     const inner = container.querySelector(this.settings.inner);

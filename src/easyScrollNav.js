@@ -29,7 +29,7 @@ class FSEasyScrollNav {
     if (typeof this.settings.element === "string") {
       this.nav = document.querySelector(this.settings.element);
     } else {
-      this.nav = this.settings.element;
+      this.nav = this.settings.element ? [this.settings.element] : [];
     }
   }
 
@@ -69,7 +69,7 @@ class FSEasyScrollNav {
     );
     handleScrollEvent();
 
-    window.addEventListener("resize", this.setTop);
+    window.addEventListener("resize", this.setTop.bind(this));
   }
 }
 
