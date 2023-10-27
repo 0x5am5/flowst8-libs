@@ -149,7 +149,7 @@ class FSEasyLazyLoadYouTube {
   addEvents(container) {
     container.addEventListener("click", (e) => {
       e.preventDefault();
-      container.innerHTML = this.getEmbedCode(
+      container.parentNode.innerHTML = this.getEmbedCode(
         this.settings.youtubeId,
         this.settings.title
       );
@@ -158,7 +158,7 @@ class FSEasyLazyLoadYouTube {
     if (this.settings.onScroll) {
       const elementBounds = container.getBoundingClientRect();
       let elementPosition = elementBounds.top;
-      let windowPosition = 0;
+      let windowPosition = elementBounds.top;
       if (this.settings.onScroll.split(" ")[0] === "center") {
         elementPosition = elementPosition + elementBounds.height / 2;
       } else if (this.settings.onScroll.split(" ")[0] === "bottom") {
