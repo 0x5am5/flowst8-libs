@@ -1,5 +1,3 @@
-const gsap = require("gsap/dist/gsap.js");
-
 const css = (el) => `
   ${el.inner} {
     width: 100%;
@@ -21,37 +19,31 @@ const css = (el) => `
 
 class FSEasyInfiniteSlider {
   constructor(settings = {}) {
-    if (!gsap) {
-      console.error(
-        "FlowSt8 Easy Infinite Slider: GSAP is required for Easy Infinite Scroll. Please follow https://greensock.com/docs/"
-      );
-    } else {
-      // defaults
-      // HTML attributes will always override settings
-      this.settings = {
-        element: "[data-eis-scroll-container]",
-        inner: "[data-eis-scroll-inner]",
-        children: "[data-eis-scroll-item]",
-        duration: "110s",
-        mouseControl: false,
-        ...settings,
-      };
+    // defaults
+    // HTML attributes will always override settings
+    this.settings = {
+      element: "[data-eis-scroll-container]",
+      inner: "[data-eis-scroll-inner]",
+      children: "[data-eis-scroll-item]",
+      duration: "110s",
+      mouseControl: false,
+      ...settings,
+    };
 
-      this.getElements();
+    this.getElements();
 
-      if (this.container.length) {
-        this.container.forEach((container) => {
-          this.duplicateSlider(container);
-          // const animation = this.animate(container);
+    if (this.container.length) {
+      this.container.forEach((container) => {
+        this.duplicateSlider(container);
+        // const animation = this.animate(container);
 
-          if (
-            this.settings.mouseControl ||
-            container.getAttribute("data-eis-mouse-control")
-          ) {
-            this.addEvents(container, animation);
-          }
-        });
-      }
+        if (
+          this.settings.mouseControl ||
+          container.getAttribute("data-eis-mouse-control")
+        ) {
+          this.addEvents(container, animation);
+        }
+      });
     }
   }
 

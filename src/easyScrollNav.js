@@ -10,6 +10,8 @@ class FSEasyScrollNav {
       ...settings,
     };
 
+    this.top = 0;
+
     this.getElements();
 
     if (this.nav) {
@@ -41,18 +43,16 @@ class FSEasyScrollNav {
       this.top = document
         .querySelector(this.settings.top)
         ?.getBoundingClientRect().top;
-    } else {
+    } else if (this.top instanceof Element) {
       this.top = this.settings.top.getBoundingClientRect().top;
     }
   }
 
   addEvents() {
-    this.startingTop = document.documentElement.scrollTop;
-
     const handleScrollEvent = () => {
       const top = window.pageYOffset || document.documentElement.scrollTop;
 
-      if (top >= this.top + this.startingTop) {
+      if (top > this.top) {
         this.nav.classList.add("esn-active");
       } else {
         this.nav.classList.remove("esn-active");
