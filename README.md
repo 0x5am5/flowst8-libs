@@ -1,4 +1,5 @@
 # flowst8-libs
+A Useful library of commonly used modules inside Webflow (and outside).
 
 ## Easy Nav
 A helper module that changes style, adds/removes class at certain points on the page. Default is to change immediately.
