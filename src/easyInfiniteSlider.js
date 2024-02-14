@@ -43,6 +43,11 @@ class FSEasyInfiniteSlider {
         ) {
           this.addEvents(container, animation);
         }
+
+        if (container.getAttribute("data-eis-scroll-duration")) {
+          // override default
+          this.duration = container.getAttribute("data-eis-scroll-duration");
+        }
       });
     }
   }
