@@ -23,8 +23,13 @@ class FSEasyHoneyPot {
       const closestForm = honeyPotEl.closest("form");
 
       closestForm.addEventListener("submit", () => {
+        e.preventDefault();
         if (!honeyPotEl.checked) {
-          closestForm.submit();
+          if (this.settings.onSuccess) {
+            this.settings.onSuccess();
+          } else {
+            closestForm.submit();
+          }
         } else {
           console.warn("HoneyPot: Form submission blocked");
         }
