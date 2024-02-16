@@ -7,6 +7,8 @@ module.exports = {
     ["FSEasyScrollNav"]: "./src/easyScrollNav.js",
     ["FSEasyInfiniteSlider"]: "./src/easyInfiniteSlider.js",
     ["FSEasyLazyLoadYouTube"]: "./src/easyLazyLoadYouTube.js",
+    ["FSEasyHoneyPot"]: "./src/easyHoneyPot.js",
+    ["FSSimpleServer"]: "./src/simpleServer.js",
   },
   output: {
     path: path.resolve(__dirname, "dist"),
