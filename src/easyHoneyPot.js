@@ -38,4 +38,4 @@ class FSEasyHoneyPot {
   }
 }
 
-this.exports = FSEasyHoneyPot;
+module.exports = FSEasyHoneyPot;
